@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { HeroDto } from './dto/hero.dto';
 import { PrismaService } from 'src/database/prisma.service';
 
@@ -12,14 +12,51 @@ export class HeroService {
         return hero;
     }
 
-    async createAll (data: HeroDto[]){
-        return await this.prisma.hero.createMany({
-            data
+    async createAll(data: HeroDto[]){
+        // Busca por heróis que já existem
+        const existingHeroes = await this.prisma.hero.findMany({
+            where: {
+                civilName: {
+                    in: data.map(hero => hero.civilName),
+                },
+            }
         });
+    
+        // Filtra os heróis que ainda não foram cadastrados
+        const newHeroes = data.filter(hero => 
+            !existingHeroes.some(existingHero => existingHero.civilName === hero.civilName)
+        );
+    
+        // Se não houver heróis novos, lança erro
+        if (newHeroes.length === 0) {
+            throw new NotImplementedException("Heróis já cadastrados");
+        }
+    
+        // Cria os novos heróis
+        const aux = await this.prisma.hero.createMany({
+            data: newHeroes,
+        });
+    
+        return aux;
+    }
+    
+
+    async findAll(): Promise<HeroDto[]> {
+        return await this.prisma.hero.findMany();
     }
 
-    async findAll() {
-        return await this.prisma.hero.findMany();
+    async findByName(id: number, data: HeroDto): Promise<HeroDto>{
+        const hero = await this.prisma.hero.findFirst({
+            where: {
+                id,
+            }
+        });
+
+        if( !hero ){
+            throw new NotFoundException("Herói não encontrado");
+        }
+
+        return hero;
     }
 
     async update(id: number, data: HeroDto){
@@ -29,7 +66,7 @@ export class HeroService {
             }
         });
         if (!hero){
-            throw new Error("Herói não encontrado");
+            throw new NotFoundException("Herói não encontrado");
         } 
 
         return await this.prisma.hero.update({
@@ -48,7 +85,7 @@ export class HeroService {
         })
 
         if(!hero){
-            throw new Error("Herói não existe")
+            throw new NotFoundException("Herói não existe")
         }
 
         return await this.prisma.hero.delete({
