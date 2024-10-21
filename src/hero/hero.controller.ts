@@ -20,6 +20,11 @@ export class HeroController {
         return await this.heroService.findAll();
     }
 
+    @Get(":id")
+    async findByName(@Param("id") id: number, @Body() data: HeroDto){
+        return this.heroService.findByName(Number(id), data);
+    }
+
     @Put(":id")
     async update(@Param("id") id: number, @Body() data: HeroDto){
         return this.heroService.update(Number(id), data);
