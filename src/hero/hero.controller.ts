@@ -21,8 +21,8 @@ export class HeroController {
     }
 
     @Get(":id")
-    async findByName(@Param("id") id: number, @Body() data: HeroDto){
-        return this.heroService.findByName(Number(id), data);
+    async findById(@Param("id") id: number){
+        return this.heroService.findById(Number(id));
     }
 
     @Put(":id")

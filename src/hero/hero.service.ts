@@ -45,7 +45,7 @@ export class HeroService {
         return await this.prisma.hero.findMany();
     }
 
-    async findByName(id: number, data: HeroDto): Promise<HeroDto>{
+    async findById(id: number): Promise<HeroDto>{
         const hero = await this.prisma.hero.findFirst({
             where: {
                 id,
