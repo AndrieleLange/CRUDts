@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { HeroDto } from './dto/hero.dto';
 import { HeroService } from './hero.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('hero')
 export class HeroController {
@@ -16,6 +17,7 @@ export class HeroController {
     }
 
     @Get()
+    @UseGuards(AuthGuard('jwt'))
     async findAll() {
         return await this.heroService.findAll();
     }

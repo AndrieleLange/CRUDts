@@ -22,3 +22,9 @@ model Hero {
 
   @@map("heroes")
 }
+
+model User {
+  name    String @db.VarChar(100)
+  email   String @id @db.VarChar(100)
+  password String @db.VarChar(100)
+}
