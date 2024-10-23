@@ -58,8 +58,8 @@ export class UserService {
     }
 
 
-    async findByEmail(email: string): Promise<any>{
-        return this.prisma.user.findFirst({
+    async findByEmail(email: string): Promise<userDto>{
+        return this.prisma.user.findUnique({
             where: {
                 email,
             }

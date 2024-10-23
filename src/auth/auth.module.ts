@@ -9,7 +9,6 @@ import { PrismaService } from 'src/database/prisma.service';
 import { AuthController } from './auth.controller';
 import { APP_GUARD } from '@nestjs/core';
 
-
 @Module({
   imports: [
     PassportModule,
