@@ -8,12 +8,13 @@ import { LocalStrategy } from './local.auth';
 import { PrismaService } from 'src/database/prisma.service';
 import { AuthController } from './auth.controller';
 import { APP_GUARD } from '@nestjs/core';
+import { jwtConstants } from './constants';
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: 'topsecret', // A chave usada para assinar o token
+      secret: jwtConstants.secret, // A chave usada para assinar o token
       signOptions: { expiresIn: '5m' },
     }),
   ],

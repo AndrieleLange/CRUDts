@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { userDto } from 'src/user/dto/user.dto';
+import { jwtConstants } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -23,14 +24,36 @@ export class AuthService {
     }
 
     async gerarToken(user: userDto){
-        return {
-            acess_token: this.jwtService.sign(
-                { email : user.email},
+        const payload: UsuarioPayload = { email: user.email, password: user.password };
+
+        const acess_token = this.jwtService.sign(
+                { payload },
                 {
-                    secret : 'topsecret',
-                    expiresIn : '5m'
-                },
-            ),
+                    secret : jwtConstants.secret,
+                    expiresIn: '5m'
+
+                }        
+            )
+            console.log(acess_token)
+            return acess_token
+    }
+
+    async checarToken(token: string){
+        try {
+            console.log("token ", token)
+            const requesterCanAccess = await this.jwtService.verifyAsync(token.replace(" Bearer ", ""))
+            console.log("requester can access? ", requesterCanAccess)
+            return requesterCanAccess
+        } catch (err) {
+            return false;
         }
     }
+
+    
+
 }
+
+export interface UsuarioPayload {
+    email: string;
+    password: string;
+  }

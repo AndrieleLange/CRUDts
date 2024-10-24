@@ -24,7 +24,8 @@ model Hero {
 }
 
 model User {
-  name    String @db.VarChar(100)
-  email   String @id @db.VarChar(100)
-  password String @db.VarChar(100)
+  id      Int      @id @default(autoincrement())
+  name    String 
+  email   String
+  password String 
 }
