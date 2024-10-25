@@ -34,15 +34,12 @@ export class AuthService {
 
                 }        
             )
-            console.log(acess_token)
             return acess_token
     }
 
     async checarToken(token: string){
         try {
-            console.log("token ", token)
             const requesterCanAccess = await this.jwtService.verifyAsync(token.replace(" Bearer ", ""))
-            console.log("requester can access? ", requesterCanAccess)
             return requesterCanAccess
         } catch (err) {
             return false;

@@ -1,13 +1,13 @@
 //auth.module.ts
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthGuard, PassportModule } from '@nestjs/passport';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { AuthGuard } from './auth.guard';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.auth';
 import { PrismaService } from 'src/database/prisma.service';
 import { AuthController } from './auth.controller';
-import { APP_GUARD } from '@nestjs/core';
 import { jwtConstants } from './constants';
 
 @Module({
@@ -19,11 +19,7 @@ import { jwtConstants } from './constants';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, LocalStrategy, PrismaService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard('jwt'),
-    // },
-  ],
+  providers: [AuthService, UserService, LocalStrategy, PrismaService, AuthGuard, JwtService],
+  exports: [AuthService, AuthGuard, JwtModule],
 })
 export class AuthModule {}

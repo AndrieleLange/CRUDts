@@ -8,20 +8,10 @@ import { UsuarioPayload } from './auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private jwtservice: JwtService, private authService: AuthService){}
-  // constructor(private readonly authService: AuthService) { }
-
-
-//   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-//     const { authorization } = context.switchToHttp().getRequest().headers;
-//     console.log(authorization)
-//     return this.authService.checarToken(authorization ?? "");
-// }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-
-    console.log("Token recebido:", token);
     
     if(!token){
       throw new UnauthorizedException();

@@ -13,10 +13,11 @@ export class AuthController{
         return this.authService.validarUser(LoginDto.email, LoginDto.password);
     }
 
-    @Get("/profile")
-    @UseGuards(AuthGuard)
-    getProfile(@Request() req){
-        return req.user;
-    }
+    // não funciona
+    // @Get("/profile")
+    // @UseGuards(AuthGuard)
+    // getProfile(@Request() req){
+    //     return req.user;
+    // }
 
 }
