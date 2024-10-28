@@ -28,24 +28,20 @@ export class UserService {
     }
 
     async updatePassword(email: string, password: string): Promise<string>{
-        const existUser = this.prisma.user.findFirst({
-            where: {
-                email
-            }
-        })
+        const existUser = await this.findByEmail(email);
 
         if (existUser == null){
             throw new ConflictException("Email não está cadastrado")
         }
 
-        const atualizado = this.prisma.user.update({
+        const atualizado = await this.prisma.user.update({
+            where: {
+                email: (await existUser).email
+            },
             data : {
                 email: (await existUser).email,
                 name: (await existUser).name,
-                password
-            },
-            where: {
-                email
+                password: password
             }
         })
 
@@ -59,7 +55,7 @@ export class UserService {
 
 
     async findByEmail(email: string): Promise<userDto>{
-        return this.prisma.user.findUnique({
+        return this.prisma.user.findFirst({
             where: {
                 email,
             }
