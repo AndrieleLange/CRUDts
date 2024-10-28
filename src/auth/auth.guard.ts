@@ -5,12 +5,16 @@ import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { UsuarioPayload } from './auth.service';
 
+export interface RequisicaoComUsuario extends Request {
+  usuario: UsuarioPayload;
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private jwtservice: JwtService, private authService: AuthService){}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<RequisicaoComUsuario>();
     const token = this.extractTokenFromHeader(request);
     
     if(!token){
@@ -24,7 +28,8 @@ export class AuthGuard implements CanActivate {
           secret: jwtConstants.secret,
         }
       );
-      request.user = payload;
+      request.usuario = payload;
+
     } catch {
       throw new UnauthorizedException('Jwt inválido');
     }
