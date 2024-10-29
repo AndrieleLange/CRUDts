@@ -10,4 +10,9 @@ export class UserController {
     async createUser(@Body() data: userDto) {
         return this.user.createUser(data.name, data.email, data.password);
     }
+
+    @Post("/update")
+    async updatePassword(@Body() data: userDto){
+        return this.user.updatePassword(data.email, data.password);
+    }
 }
