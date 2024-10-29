@@ -7,7 +7,7 @@ Algumas funcionalidades já disponiveis.
 
 * __Modificações dos Super-heróis:__ Cadastrar, atualizar, apagar cadastro, buscar por todos os super-heróis cadastrados e buscar por apenas um (apenas pelo Id por enquanto).
 * __Administradores:__ Cadastrar administradores, realizar login.
-* __JWT token:__ Autenticação e bloqueio das rotas de herói para apenas quem estiver logado
+* __JWT token:__ Autenticação e bloqueio das rotas de herói para apenas quem estiver logado consiga acessar as rotas e verificação se o token e o usuário são os mesmo.
  
 
 # Execução
